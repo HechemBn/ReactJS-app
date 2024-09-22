@@ -8,13 +8,6 @@ pipeline {
     
     stages {
 
-           stage('check docker') {
-            steps {
-                script {
-                    sh "docker info"
-                }
-            }
-        }
       
         stage('Build Docker Image') {
             steps {
@@ -35,4 +28,3 @@ pipeline {
 
     } 
 }
-s
