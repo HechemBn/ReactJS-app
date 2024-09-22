@@ -14,7 +14,8 @@
                 steps {
                     script {
                     def user = sh(script: 'whoami', returnStdout: true).trim()
-                    echo "Current User: ${user}"
+                    def id = sh(script: 'id', returnStdout: true).trim()
+                    echo "Current User: ${user} , id : ${id}"
                 }
                 }
             }
