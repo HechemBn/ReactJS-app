@@ -7,12 +7,7 @@ pipeline {
     }
     
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'master', url: 'https://github.com/HechemBn/ReactJS-app.git'
-            }
-        }
-
+      
         stage('Build Docker Image') {
             steps {
                 script {
