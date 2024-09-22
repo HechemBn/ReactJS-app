@@ -13,8 +13,9 @@
             stage('check') {
                 steps {
                     script {
-                        sh "echo ${whoami}"
-                    }
+                    def user = sh(script: 'whoami', returnStdout: true).trim()
+                    echo "Current User: ${user}"
+                }
                 }
             }
 
