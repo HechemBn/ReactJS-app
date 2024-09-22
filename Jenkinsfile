@@ -14,7 +14,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "echo docker build -t ${DOCKER_IMAGE} ."
+                    sh "docker build -t ${DOCKER_IMAGE} ."
                 }
             }
         }
@@ -23,17 +23,11 @@ pipeline {
             steps {
                 script {
                     sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin" 
-                    sh "echo docker push ${DOCKER_IMAGE}"
+                    sh "docker push ${DOCKER_IMAGE}"
                 }
             }
         }
-         stage('Run Docker Container') {
-            steps {
-                script {
-                    sh "echo docker run -d --name ${CONTAINER_NAME} -p ${PORT}:${PORT} ${DOCKER_IMAGE}"
-                }
-            }
-        }
+     
 
     }  
 }
