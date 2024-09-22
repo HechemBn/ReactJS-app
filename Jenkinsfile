@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS=credentials('dockerhub')
         DOCKER_IMAGE = 'react-app'
-        DOCKER_REGISTRY = 'docker.io'
+        DOCKER_REGISTRY = 'hub.docker.com/'
     }
     stages {
         stage('Checkout') {
