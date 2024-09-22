@@ -14,7 +14,6 @@
                 steps {
                     script {
                         sh "echo ${whoami}"
-                        sh "echo ${id}"
                     }
                 }
             }
