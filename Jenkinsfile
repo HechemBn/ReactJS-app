@@ -10,6 +10,15 @@ pipeline {
     
     stages {
 
+         stage('check') {
+            steps {
+                script {
+                    sh "echo ${whoami}"
+                    sh "echo ${ix}"
+                }
+            }
+        }
+
       
         stage('Build Docker Image') {
             steps {
