@@ -24,7 +24,7 @@
             stage('Build Docker Image') {
                 steps {
                     script {
-                        sh " sudo docker build -t ${DOCKER_IMAGE} ."
+                        sh "docker build -t ${DOCKER_IMAGE} ."
                     }
                 }
             }
