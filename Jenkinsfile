@@ -12,8 +12,8 @@
             stage('Build Docker Image') {
                 steps {
                 script {
-                        docker.build("${DOCKER_IMAGE}", "./react-app")
-                        }
+                        docker.build("${DOCKER_IMAGE}", "./")
+                    }
                 }
             }
 
