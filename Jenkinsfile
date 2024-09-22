@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub') 
-        DOCKER_IMAGE = 'hechem220/react-img:latest'
+        DOCKER_IMAGE = 'hechem220/react-img'
     }
     
     stages {
