@@ -2,51 +2,38 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS=credentials('dockerhub')
-        DOCKER_IMAGE = 'react-app'
-        DOCKER_REGISTRY = 'hub.docker.com/'
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub') 
+        DOCKER_IMAGE = 'hechem220/react-app:latest'
     }
+    
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'master', url: 'https://github.com/HechemBn/ReactJS-app.git'
+            }
+        }
 
-        stage('Dockerhub Login') {
-            steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            }
-        }
-        
-        stage('Login to Docker Hub') {
-            steps {
-                script {
-                    docker.withRegistry("https://${DOCKER_REGISTRY}", "${DOCKERHUB_CREDENTIALS}") {
-                        echo 'Logged into Docker Hub'
-                    }
-                }
-            }
-        }
-        
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t ${DOCKER_IMAGE}:latest ."
+                    sh "docker build -t ${DOCKER_IMAGE} ."
                 }
             }
         }
 
-          stage('Push Docker Image') {
+        stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry("https://${DOCKER_REGISTRY}", "${DOCKERHUB_CREDENTIALS}") {
-                        sh "docker push ${DOCKER_IMAGE}:latest"
-                    }
+                    sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin" 
+                    sh "docker push ${DOCKER_IMAGE}"
                 }
             }
         }
 
+        // Optionnel: stage pour déployer avec Ansible
         // stage('Build & push Dockerfile') {
         //     steps {
-        //         sh "
-        //         ansible-playbook ansible-playbook.yml
-        //         "
+        //         sh "ansible-playbook ansible-playbook.yml"
         //     }
         // }
     } 
