@@ -7,9 +7,10 @@ pipeline {
         DOCKER_REGISTRY = 'hub.docker.com/'
     }
     stages {
-        stage('Checkout') {
+
+        stage('Dockerhub Login') {
             steps {
-                git branch: 'master', url: 'https://github.com/HechemBn/ReactJS-app.git'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
         
