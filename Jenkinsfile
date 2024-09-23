@@ -9,16 +9,7 @@
         
         stages {
 
-            stage('Check User') {
-                steps {
-                    script {
-                    def user = sh(script: 'whoami', returnStdout: true).trim()
-                    def id = sh(script: 'id', returnStdout: true).trim()
-                    echo "Current User: ${user} , id : ${id}"
-                }
-                }
-            }
-
+        
         
             stage('Build Docker Image') {
                 steps {
