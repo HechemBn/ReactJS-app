@@ -11,13 +11,13 @@
 
         
         
-            stage('Build Docker Image') {
-                steps {
-                    script {
-                        sh "docker build -t ${DOCKER_IMAGE} ."
-                    }
-                }
-            }
+            // stage('Build Docker Image') {
+            //     steps {
+            //         script {
+            //             sh "docker build -t ${DOCKER_IMAGE} ."
+            //         }
+            //     }
+            // }
 
             stage('Push Docker Image') {
                 steps {
