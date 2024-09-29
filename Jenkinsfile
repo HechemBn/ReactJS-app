@@ -29,7 +29,7 @@
             stage('Deploy with Ansible') {
                steps {
                 script {
-                    sh "ansible-playbook -i inventory ansible-playbook.yml"
+                    sh "ansible-playbook -i /etc/ansible/inventory ansible-playbook.yml"
                 }
                }
         }
