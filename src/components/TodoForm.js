@@ -22,7 +22,7 @@ export const TodoForm = ({ addTodo }) => {
         className="todo-input"
       />
       <button type="submit" className="todo-btn">
-        Add Task
+        Add new task
       </button>
     </form>
   );

@@ -1,25 +1,32 @@
 ---
-- name: "Build a container with ansible"
-  hosts: localhost
-  connection: local
+- name: Deployment 
+  hosts: webservers
+  become: yes
   tasks:
-    - name: stop current running container
-      command: docker stop react-app
+    - name: Pull the Docker image from DockerHub
+      docker_image:
+        name: hechem220/react-img
+        tag: latest
+        source: pull
+
+    - name: Stop any running container with the same name
+      docker_container:
+        name: react-app-container
+        state: stopped
+        force_kill: true
       ignore_errors: yes
 
-    - name: remove stopped container
-      command: docker rm react-app
+    - name: Remove the old container
+      docker_container:
+        name: react-app-container
+        state: absent
       ignore_errors: yes
 
-    - name: remove project-image
-      command: docker rmi react-app
-      ignore_errors: yes
-
-    - name: build docker image using the Dockerfile
-      command: docker build -t hechem220/react-img .
-
-    - name: Push Image to dockerhub
-      command: docker push hechem220/react-img
-
-    - name: run container
-      command: docker run -d --name react-app -p 5000:80 hechem220/react-img
+    - name: Run the new container
+      docker_container:
+        name: react-app-container
+        image: hechem220/react-img:latest
+        state: started
+        ports:
+          - "3000:3000"
+        restart_policy: always
