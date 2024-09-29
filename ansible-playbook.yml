@@ -7,8 +7,8 @@
       docker_image:
         name: hechem220/react-img
         tag: latest
-        source: pull
-
+        pull: yes
+        
     - name: Stop any running container with the same name
       docker_container:
         name: react-app-container
