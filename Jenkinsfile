@@ -2,7 +2,9 @@
         agent any
         environment {
             DOCKERHUB_CREDENTIALS = credentials('dockerhub') 
-            DOCKER_IMAGE = 'hechem220/react-img'   
+            DOCKER_IMAGE = 'hechem220/react-img'  
+            KUBECONFIG = '/etc/rancher/k3s/k3s.yaml' 
+ 
         }
       
         stages {
@@ -33,7 +35,18 @@
                     sh "ansible-playbook -i /etc/ansible/inventory ansible-playbook.yml"
                 }
                }
+            }
+            stage('Deploy to K3s Cluster') {
+            steps {
+                script {
+                    sh """
+                    kubectl --kubeconfig=${KUBECONFIG} apply -f deployment.yaml
+                    kubectl --kubeconfig=${KUBECONFIG} apply -f service.yaml
+                    """
+                }
+            }
         }
+        
        
         }  
     }
