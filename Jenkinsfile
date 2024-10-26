@@ -40,8 +40,8 @@
             steps {
                 script {
                     sh """
-                    kubectl --kubeconfig=${KUBECONFIG} apply -f deployment.yaml
-                    kubectl --kubeconfig=${KUBECONFIG} apply -f service.yaml
+                    kubectl --kubeconfig=${KUBECONFIG} apply -f deployment.yml
+                    kubectl --kubeconfig=${KUBECONFIG} apply -f service.yml
                     """
                 }
             }
