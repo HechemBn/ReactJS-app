@@ -4,29 +4,16 @@
   become: yes
   tasks:
     - name: Pull the Docker image from DockerHub
-      docker_image:
-        name: hechem220/react-img
-        tag: latest
-        source: pull
+      command: docker pull hechem220/react-img:latest
 
     - name: Stop any running container with the same name
-      docker_container:
-        name: react-app-container
-        state: stopped
-        force_kill: true
+      command: docker stop react-app-container
       ignore_errors: yes
 
     - name: Remove the old container
-      docker_container:
-        name: react-app-container
-        state: absent
+      command: docker rm react-app-container
       ignore_errors: yes
 
     - name: Run the new container
-      docker_container:
-        name: react-app-container
-        image: hechem220/react-img:latest
-        state: started
-        ports:
-          - "3000:3000"
-        restart_policy: always
+      command: docker run -d --name react-app-container -p 80:80 --restart always hechem220/react-img:latest
+
