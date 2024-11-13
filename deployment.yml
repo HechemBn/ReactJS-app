@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 apiVersion: apps/v1 
 kind: Deployment   
 metadata:
@@ -17,3 +18,24 @@ spec:
         image: hechem220/react-img:latest
         ports:
         - containerPort: 8080
+=======
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: react-app
+  template:
+    metadata:
+      labels:
+        app: react-app
+    spec:
+      containers:
+      - name: react-app-container
+        image: hechem220/react-img:latest
+        ports:
+        - containerPort: 8080
+>>>>>>> f0e1b54ef2b0a98cf8c4d9f9d43112fd122be8fd
