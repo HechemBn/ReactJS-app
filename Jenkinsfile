@@ -15,7 +15,7 @@
                 script {
                     // Exécution de l'analyse SonarQube avec le scanner Node.js
                     withSonarQubeEnv(SONARQUBE_SERVER) {
-                        sh 'sonar-scanner -Dsonar.projectKey=monProjet'
+                        sh 'sonar-scanner -Dsonar.projectKey=jenkins'
                     }
                 }
             }
