@@ -1,8 +1,7 @@
 pipeline {
     agent any
     tools {
-        sonarQubeScanner 'SonarQube Scanner'  // Nom de l'installation du scanner
-    }
+        sonarQubeScanner 'SonarQube'  
     environment {
         DOCKER_IMAGE = 'hechem220/react-img'  
         KUBECONFIG = '/etc/rancher/k3s/k3s.yaml' 
