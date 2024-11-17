@@ -4,23 +4,19 @@
             DOCKERHUB_CREDENTIALS = credentials('dockerhub') 
             DOCKER_IMAGE = 'hechem220/react-img'  
             KUBECONFIG = '/etc/rancher/k3s/k3s.yaml' 
- 
+           SONARQUBE_SERVER = 'sq'  // Nom du serveur SonarQube configuré dans Jenkins
+
         }
       
         stages {
 
-
-        stage('SonarQube Analysis') {
-            environment {
-                scannerHome = tool 'SonarScanner'
-            }
+    stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh "${scannerHome}/bin/sonar-scanner \
-                    -Dsonar.projectKey=jenkins \
-                    -Dsonar.sources=. \
-                    -Dsonar.host.url=http://192.168.33.10:9000 \
-                    -Dsonar.login=jenkins"
+                script {
+                    // Exécution de l'analyse SonarQube avec le scanner Node.js
+                    withSonarQubeEnv(SONARQUBE_SERVER) {
+                        sh 'sonar-scanner -Dsonar.projectKey=monProjet'
+                    }
                 }
             }
         }
