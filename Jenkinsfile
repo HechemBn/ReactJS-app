@@ -29,6 +29,21 @@
                     }
                 }
             }
+
+            stage('SonarQube Analysis') {
+            environment {
+                scannerHome = tool 'SonarScanner'
+            }
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh "${scannerHome}/bin/sonar-scanner \
+                    -Dsonar.projectKey=jenkins \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=http://192.168.33.10:9000 \
+                    -Dsonar.login=jenkins"
+                }
+            }
+        }
             stage('Deploy with Ansible') {
                steps {
                 script {
@@ -36,6 +51,7 @@
                 }
                }
             }
+
             stage('Deploy to K3s Cluster') {
             steps {
                 script {
@@ -46,6 +62,8 @@
                 }
             }
         }
+
+        
         
        
         }  
