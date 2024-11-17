@@ -6,14 +6,14 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'hechem220/react-img'  
         KUBECONFIG = '/etc/rancher/k3s/k3s.yaml' 
-        SONARQUBE_SERVER = 'sq'  // Nom de ton serveur SonarQube configuré dans Jenkins
+        SONARQUBE_SERVER = 'sq' 
     }
 
     stages {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONARQUBE_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'jenkins-sonar', variable: 'SONARQUBE_TOKEN')]) {
                         sh """
                         sonar-scanner \
                             -Dsonar.projectKey=my-react-project \
