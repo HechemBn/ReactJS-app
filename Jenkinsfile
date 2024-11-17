@@ -7,12 +7,8 @@
  
         }
 
-        
-    
-      
+          
         stages {
-
-
         stage('SonarQube Analysis') {
             environment {
                 scannerHome = tool 'SonarScanner'
