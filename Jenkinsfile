@@ -9,15 +9,8 @@ pipeline {
     }
     
     stages {
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    sh "docker build -t ${DOCKER_IMAGE} ."
-                }
-            }
-        }
 
-        stage('SonarQube Analysis') {
+    stage('SonarQube Analysis') {
             steps {
                 script {
                     sh """
@@ -30,6 +23,16 @@ pipeline {
                 }
             }
         }
+
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh "docker build -t ${DOCKER_IMAGE} ."
+                }
+            }
+        }
+
 
         stage('Login to DockerHub') {
             steps {
