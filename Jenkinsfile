@@ -1,36 +1,30 @@
 pipeline {
     agent any
+    tools {
+        sonarQubeScanner 'SonarQube Scanner'  // Nom de l'installation du scanner
+    }
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub') 
         DOCKER_IMAGE = 'hechem220/react-img'  
         KUBECONFIG = '/etc/rancher/k3s/k3s.yaml' 
-        SONARQUBE_SERVER = 'sq'  
-        SONARQUBE_TOKEN = credentials('jenkins-sonar') 
+        SONARQUBE_SERVER = 'sq'  // Nom de ton serveur SonarQube configuré dans Jenkins
     }
-    tools {
-        sonarQubeScanner 'SonarQube Scanner'  
-    }
-    
-    stages {
 
-     stage('SonarQube Analysis') {
+    stages {
+        stage('SonarQube Analysis') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'jenkins-sonar', variable: 'SONARQUBE_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONARQUBE_TOKEN')]) {
                         sh """
                         sonar-scanner \
                             -Dsonar.projectKey=my-react-project \
                             -Dsonar.sources=src \
                             -Dsonar.host.url=http://localhost:9000 \
-                            -Dsonar.login=$SONARQUBE_TOKEN
+                            -Dsonar.login=${SONARQUBE_TOKEN}
                         """
                     }
                 }
             }
         }
-    
-
-
         stage('Build Docker Image') {
             steps {
                 script {
@@ -38,8 +32,6 @@ pipeline {
                 }
             }
         }
-
-
         stage('Login to DockerHub') {
             steps {
                 script {
@@ -47,7 +39,6 @@ pipeline {
                 }
             }
         }
-
         stage('Push Docker Image to DockerHub') {
             steps {
                 script {
@@ -55,7 +46,6 @@ pipeline {
                 }
             }
         }
-
         stage('Deploy with Ansible') {
             steps {
                 script {
@@ -63,7 +53,6 @@ pipeline {
                 }
             }
         }
-
         stage('Deploy to K3s Cluster') {
             steps {
                 script {
