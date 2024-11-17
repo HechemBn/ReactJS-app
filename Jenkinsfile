@@ -7,6 +7,9 @@ pipeline {
         SONARQUBE_SERVER = 'sq'  
         SONARQUBE_TOKEN = credentials('jenkins-sonar') 
     }
+    tools {
+        sonarQubeScanner 'SonarQube Scanner'  
+    }
     
     stages {
 
