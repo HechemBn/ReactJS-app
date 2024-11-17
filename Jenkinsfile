@@ -10,19 +10,22 @@ pipeline {
     
     stages {
 
-    stage('SonarQube Analysis') {
+     stage('SonarQube Analysis') {
             steps {
                 script {
-                    sh """
-                    sonar-scanner \
-                        -Dsonar.projectKey=jenkins \
-                        -Dsonar.sources=src \
-                        -Dsonar.host.url=http://192.168.33.10:9000 \
-                        -Dsonar.login=${SONARQUBE_TOKEN}
-                    """
+                    withCredentials([string(credentialsId: 'jenkins-sonar', variable: 'SONARQUBE_TOKEN')]) {
+                        sh """
+                        sonar-scanner \
+                            -Dsonar.projectKey=my-react-project \
+                            -Dsonar.sources=src \
+                            -Dsonar.host.url=http://localhost:9000 \
+                            -Dsonar.login=$SONARQUBE_TOKEN
+                        """
+                    }
                 }
             }
         }
+    
 
 
         stage('Build Docker Image') {
