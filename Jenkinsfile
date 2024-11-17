@@ -8,6 +8,11 @@
         }
 
         
+    
+      
+        stages {
+
+
         stage('SonarQube Analysis') {
             environment {
                 scannerHome = tool 'SonarScanner'
@@ -22,8 +27,6 @@
                 }
             }
         }
-      
-        stages {
             stage('Build Docker Image') {
                 steps {
                     script {
