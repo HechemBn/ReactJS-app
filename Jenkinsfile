@@ -1,30 +1,43 @@
 pipeline {
     agent any
-    // tools {
-    //     sonarQubeScanner 'SonarQube' 
-    // }
     environment {
         DOCKER_IMAGE = 'hechem220/react-img'  
         KUBECONFIG = '/etc/rancher/k3s/k3s.yaml' 
-        SONARQUBE_SERVER = 'sq' 
+        SONARQUBE_SERVER = 'sq'  
+        SCANNER_HOME=tool 'sonar-scanner'
+
     }
 
     stages {
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    withCredentials([string(credentialsId: 'jenkins-sonar', variable: 'SONARQUBE_TOKEN')]) {
-                        sh """
-                        sonar-scanner \
-                            -Dsonar.projectKey=my-react-project \
-                            -Dsonar.sources=src \
-                            -Dsonar.host.url=http://localhost:9000 \
-                            -Dsonar.login=${SONARQUBE_TOKEN}
-                        """
-                    }
+        // stage('SonarQube Analysis') {
+        //     steps {
+        //         script {
+        //             withCredentials([string(credentialsId: 'jenkins-sonar', variable: 'SONARQUBE_TOKEN')]) {
+        //                 sh """
+        //                 sonar-scanner \
+        //                     -Dsonar.projectKey=jenkins \
+        //                     -Dsonar.sources=src \
+        //                     -Dsonar.host.url=http://localhost:9000 \
+        //                     -Dsonar.login=${SONARQUBE_TOKEN}
+        //                 """
+        //             }
+        //         }
+        //     }
+        // }
+
+           stage("Sonarqube Analysis "){
+            steps{
+                withSonarQubeEnv('sq') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=jenkins \
+                    -Dsonar.sources=src \
+                    -Dsonar.projectKey=jenkins '''
+    
                 }
             }
         }
+
+
+
         stage('Build Docker Image') {
             steps {
                 script {
