@@ -5,6 +5,7 @@ pipeline {
         KUBECONFIG = '/etc/rancher/k3s/k3s.yaml' 
         SONARQUBE_SERVER = 'sq'  
         SCANNER_HOME = tool 'sonar-scanner'
+        NODE_VERSION = '16' // Spécifiez la version de Node.js requise
     }
 
     stages {
@@ -12,8 +13,11 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+                    # Ajouter le dépôt officiel de Node.js
+                    curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | sudo -E bash -
+                    # Installer Node.js
                     sudo apt-get install -y nodejs
+                    # Vérifier l'installation
                     node -v
                     npm -v
                     '''
