@@ -5,30 +5,9 @@ pipeline {
         KUBECONFIG = '/etc/rancher/k3s/k3s.yaml' 
         SONARQUBE_SERVER = 'sq'  
         SCANNER_HOME = tool 'sonar-scanner'
-        NODE_VERSION = '16' // Spécifiez la version de Node.js requise
     }
 
     stages {
-     stage('Install Node.js') {
-    steps {
-        script {
-            sh '''
-            # Télécharger et installer nvm
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \\. "$NVM_DIR/nvm.sh"
-            
-            # Installer la version souhaitée de Node.js
-            nvm install 16
-            nvm use 16
-            
-            # Vérification
-            node -v
-            npm -v
-            '''
-        }
-    }
-}
 
         stage('Build Docker Image') {
             steps {
