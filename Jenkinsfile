@@ -9,21 +9,26 @@ pipeline {
     }
 
     stages {
-        stage('Install Node.js') {
-            steps {
-                script {
-                    sh '''
-                    # Ajouter le dépôt officiel de Node.js
-                    curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | sudo -E bash -
-                    # Installer Node.js
-                    sudo apt-get install -y nodejs
-                    # Vérifier l'installation
-                    node -v
-                    npm -v
-                    '''
-                }
-            }
+     stage('Install Node.js') {
+    steps {
+        script {
+            sh '''
+            # Télécharger et installer nvm
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \\. "$NVM_DIR/nvm.sh"
+            
+            # Installer la version souhaitée de Node.js
+            nvm install 16
+            nvm use 16
+            
+            # Vérification
+            node -v
+            npm -v
+            '''
         }
+    }
+}
 
         stage('Build Docker Image') {
             steps {
