@@ -10,6 +10,16 @@ pipeline {
 
     stages {
       
+    
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh "docker build -t ${DOCKER_IMAGE} ."
+                }
+            }
+        }
+
         stage("Sonarqube Analysis "){
             steps{
                 withSonarQubeEnv('sq') {
@@ -17,14 +27,6 @@ pipeline {
                     -Dsonar.sources=src \
                     -Dsonar.projectKey=jenkins '''
     
-                }
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    sh "docker build -t ${DOCKER_IMAGE} ."
                 }
             }
         }
