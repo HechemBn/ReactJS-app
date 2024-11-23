@@ -4,39 +4,21 @@ pipeline {
         DOCKER_IMAGE = 'hechem220/react-img'  
         KUBECONFIG = '/etc/rancher/k3s/k3s.yaml' 
         SONARQUBE_SERVER = 'sq'  
-        SCANNER_HOME=tool 'sonar-scanner'
-
+        SCANNER_HOME = tool 'sonar-scanner'
     }
 
     stages {
-        // stage('SonarQube Analysis') {
-        //     steps {
-        //         script {
-        //             withCredentials([string(credentialsId: 'jenkins-sonar', variable: 'SONARQUBE_TOKEN')]) {
-        //                 sh """
-        //                 sonar-scanner \
-        //                     -Dsonar.projectKey=jenkins \
-        //                     -Dsonar.sources=src \
-        //                     -Dsonar.host.url=http://localhost:9000 \
-        //                     -Dsonar.login=${SONARQUBE_TOKEN}
-        //                 """
-        //             }
-        //         }
-        //     }
-        // }
-
-           stage("Sonarqube Analysis "){
-            steps{
+        stage("SonarQube Analysis") {
+            steps {
                 withSonarQubeEnv('sq') {
-                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=jenkins \
-                    -Dsonar.sources=src \
-                    -Dsonar.projectKey=jenkins '''
-    
+                    sh """
+                    $SCANNER_HOME/bin/sonar-scanner \
+                    -Dsonar.projectKey=jenkins \
+                    -Dsonar.sources=src
+                    """
                 }
             }
         }
-
-
 
         stage('Build Docker Image') {
             steps {
@@ -45,13 +27,17 @@ pipeline {
                 }
             }
         }
+
         stage('Login to DockerHub') {
             steps {
                 script {
-                    sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin" 
+                    sh """
+                    echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin
+                    """
                 }
             }
         }
+
         stage('Push Docker Image to DockerHub') {
             steps {
                 script {
@@ -59,6 +45,7 @@ pipeline {
                 }
             }
         }
+
         stage('Deploy with Ansible') {
             steps {
                 script {
@@ -66,6 +53,7 @@ pipeline {
                 }
             }
         }
+
         stage('Deploy to K3s Cluster') {
             steps {
                 script {
