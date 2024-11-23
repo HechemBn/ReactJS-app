@@ -4,13 +4,22 @@ pipeline {
         DOCKER_IMAGE = 'hechem220/react-img'  
         KUBECONFIG = '/etc/rancher/k3s/k3s.yaml' 
         SONARQUBE_SERVER = 'sq'  
-        SCANNER_HOME=tool 'sonar-scanner'
-
+        SCANNER_HOME = tool 'sonar-scanner'
     }
 
     stages {
-      
-    
+        stage('Install Node.js') {
+            steps {
+                script {
+                    sh '''
+                    curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+                    sudo apt-get install -y nodejs
+                    node -v
+                    npm -v
+                    '''
+                }
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
@@ -20,16 +29,19 @@ pipeline {
             }
         }
 
-        stage("Sonarqube Analysis "){
-            steps{
+        stage("Sonarqube Analysis") {
+            steps {
                 withSonarQubeEnv('sq') {
-                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=jenkins \
+                    sh '''
+                    $SCANNER_HOME/bin/sonar-scanner \
+                    -Dsonar.projectKey=jenkins \
                     -Dsonar.sources=src \
-                    -Dsonar.projectKey=jenkins '''
-    
+                    -Dsonar.projectKey=jenkins
+                    '''
                 }
             }
         }
+
         stage('Login to DockerHub') {
             steps {
                 script {
@@ -37,6 +49,7 @@ pipeline {
                 }
             }
         }
+
         stage('Push Docker Image to DockerHub') {
             steps {
                 script {
@@ -44,6 +57,7 @@ pipeline {
                 }
             }
         }
+
         stage('Deploy with Ansible') {
             steps {
                 script {
@@ -51,6 +65,7 @@ pipeline {
                 }
             }
         }
+
         stage('Deploy to K3s Cluster') {
             steps {
                 script {
