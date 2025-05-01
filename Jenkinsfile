@@ -47,8 +47,8 @@ pipeline {
             steps {
                 script {
                     sh """
-                    sudo kubectl --kubeconfig=${KUBECONFIG} apply -f deployment.yml
-                    sudo kubectl --kubeconfig=${KUBECONFIG} apply -f service.yml
+                     kubectl --kubeconfig=${KUBECONFIG} apply -f deployment.yml
+                     kubectl --kubeconfig=${KUBECONFIG} apply -f service.yml
                     """
                 }
             }
