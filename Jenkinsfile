@@ -3,8 +3,6 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'hechem220/react-img'  
         KUBECONFIG = '/etc/rancher/k3s/k3s.yaml' 
-        SONARQUBE_SERVER = 'sq'  
-        SCANNER_HOME = tool 'sonar-scanner'
     }
 
     stages {
@@ -17,18 +15,7 @@ pipeline {
             }
         }
 
-        stage("Sonarqube Analysis") {
-            steps {
-                withSonarQubeEnv('sq') {
-                    sh '''
-                    $SCANNER_HOME/bin/sonar-scanner \
-                    -Dsonar.projectKey=jenkins \
-                    -Dsonar.sources=src \
-                    -Dsonar.projectKey=jenkins
-                    '''
-                }
-            }
-        }
+    
 
         stage('Login to DockerHub') {
             steps {
