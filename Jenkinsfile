@@ -4,8 +4,7 @@ pipeline {
         DOCKER_IMAGE = 'hechem220/react-img'  
         KUBECONFIG = '/etc/rancher/k3s/k3s.yaml' 
         DOCKERHUB_CREDENTIALS = credentials('dockerhub') 
-          
-
+        
     }
 
     stages {
@@ -48,8 +47,8 @@ pipeline {
             steps {
                 script {
                     sh """
-                    kubectl --kubeconfig=${KUBECONFIG} apply -f deployment.yml
-                    kubectl --kubeconfig=${KUBECONFIG} apply -f service.yml
+                    sudo kubectl --kubeconfig=${KUBECONFIG} apply -f deployment.yml
+                    sudo kubectl --kubeconfig=${KUBECONFIG} apply -f service.yml
                     """
                 }
             }
