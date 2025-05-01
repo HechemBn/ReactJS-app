@@ -3,6 +3,10 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'hechem220/react-img'  
         KUBECONFIG = '/etc/rancher/k3s/k3s.yaml' 
+        
+      DOCKERHUB_CREDENTIALS = credentials('dockerhub') 
+          
+
     }
 
     stages {
